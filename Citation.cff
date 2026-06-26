@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use GlioCore in your research, please cite it as below."
+title: "GlioCore: Metabolic Glioma Segmentation from PET/MRI"
+abstract: "An open-source Python tool for semi-automatic glioma segmentation from co-registered PET and MRI, combining six clustering models, a white-matter atlas, active learning, and a novel hierarchical method validated on BraTS 2024."
+type: software
+authors:
+  - family-names: "Manca"
+    given-names: "Jonathan"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.20933962
+    description: "Concept DOI for all versions of GlioCore"
+repository-code: "https://github.com/jonathanmanca/gliocore"
+url: "https://github.com/jonathanmanca/gliocore"
+license: MIT
+version: "1.0.0"
+date-released: "2026-06-26"
+keywords:
+  - medical-imaging
+  - glioma
+  - segmentation
+  - pet-mri
+  - neuroimaging
+  - clustering
+  - active-learning
+  - napari
+  - python
