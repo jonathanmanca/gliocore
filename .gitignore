@@ -1,0 +1,71 @@
+# ============================================================
+#  GlioCore — .gitignore
+# ============================================================
+
+# ----- DATI PAZIENTI — MAI committare (dati medici sensibili) -----
+data/patients/
+data/output/
+data/ground_truth/
+data/sessions.db
+
+# ----- Atlante (file pesanti, si scaricano a parte) -----
+data/atlas/*.nii
+data/atlas/*.nii.gz
+
+# ----- Modelli addestrati e database -----
+*.pkl
+*.joblib
+*.db
+*.sqlite
+*.sqlite3
+rf_model.pkl
+rf_scaler.pkl
+
+# ----- File NIfTI sparsi (immagini mediche) -----
+*.nii
+*.nii.gz
+
+# ----- Python -----
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+*.egg
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ----- Ambienti virtuali -----
+venv/
+env/
+.venv/
+ENV/
+.conda/
+
+# ----- Editor / IDE -----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ----- Sistema operativo -----
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+
+# ----- Segreti e configurazioni locali -----
+.env
+*.key
+api_key.txt
+config_local.py
+
+# ----- Output temporanei e log -----
+*.log
+tmp/
+temp/
+*.tmp

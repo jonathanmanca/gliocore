@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" width="680" height="300" role="img">
+<title>GlioCore logo</title>
+<desc>GlioCore logo with realistic brain and PET metabolic clusters</desc>
+
+<defs>
+  <clipPath id="brain-mask">
+    <path d="M90 220 C30 215 -2 178 2 138 C6 98 28 64 62 48
+             C82 38 104 38 120 48 C128 34 144 24 164 22
+             C192 18 216 36 222 62 C236 54 256 54 268 70
+             C284 90 280 120 264 136 C276 152 276 176 260 194
+             C242 214 210 224 178 220 Z"/>
+  </clipPath>
+</defs>
+
+<g transform="translate(56, 30)">
+  <!-- Ombra -->
+  <path d="M92 224 C32 218 0 180 4 140 C8 100 30 66 64 50
+           C84 40 106 40 122 50 C130 36 146 26 166 24
+           C194 20 218 38 224 64 C238 56 258 56 270 72
+           C286 92 282 122 266 138 C278 154 278 178 262 196
+           C244 216 212 226 180 222 Z"
+        fill="#0a1a2e" opacity="0.3" transform="translate(4,6)"/>
+
+  <!-- Corpo cervello -->
+  <path d="M90 220 C30 215 -2 178 2 138 C6 98 28 64 62 48
+           C82 38 104 38 120 48 C128 34 144 24 164 22
+           C192 18 216 36 222 62 C236 54 256 54 268 70
+           C284 90 280 120 264 136 C276 152 276 176 260 194
+           C242 214 210 224 178 220 Z"
+        fill="#1c3550"/>
+
+  <!-- Zona frontale -->
+  <path d="M62 48 C82 38 104 38 120 48 C128 34 144 24 164 22
+           C192 18 216 36 222 62 C200 55 170 52 145 58
+           C125 63 108 72 95 85 C80 68 68 56 62 48 Z"
+        fill="#224060" opacity="0.8"/>
+
+  <!-- Lobo occipitale -->
+  <path d="M2 138 C6 98 28 64 62 48 C45 70 32 100 30 135
+           C28 162 38 188 58 205 C32 200 4 172 2 138 Z"
+        fill="#162d47" opacity="0.9"/>
+
+  <!-- Scissura di Silvio -->
+  <path d="M68 130 Q95 118 125 122 Q155 126 178 118 Q205 108 228 115"
+        fill="none" stroke="#0d1f33" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M68 130 Q95 118 125 122 Q155 126 178 118 Q205 108 228 115"
+        fill="none" stroke="#2a5580" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Scissura centrale -->
+  <path d="M138 48 Q132 75 136 105 Q140 128 135 150"
+        fill="none" stroke="#0d1f33" stroke-width="3" stroke-linecap="round"/>
+  <path d="M138 48 Q132 75 136 105 Q140 128 135 150"
+        fill="none" stroke="#2a5580" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Solchi frontali -->
+  <path d="M82 62 Q100 54 122 58 Q142 62 158 56"
+        fill="none" stroke="#0d1f33" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M72 90 Q98 80 124 85 Q148 90 168 82"
+        fill="none" stroke="#0d1f33" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Solchi temporali -->
+  <path d="M65 152 Q95 142 128 148 Q158 154 182 146 Q210 136 235 142"
+        fill="none" stroke="#0d1f33" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M55 178 Q85 168 118 174 Q150 180 178 172 Q205 162 228 168"
+        fill="none" stroke="#0d1f33" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Solchi parietale e occipitale -->
+  <path d="M148 52 Q158 78 162 108 Q164 130 160 155"
+        fill="none" stroke="#0d1f33" stroke-width="2" stroke-linecap="round"/>
+  <path d="M220 80 Q235 100 238 125 Q240 148 234 168"
+        fill="none" stroke="#0d1f33" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Solchi secondari -->
+  <path d="M88 108 Q108 100 130 104" fill="none" stroke="#0d1f33" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M185 90 Q208 82 228 88" fill="none" stroke="#0d1f33" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M195 160 Q218 152 242 158" fill="none" stroke="#0d1f33" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M42 158 Q58 150 75 156" fill="none" stroke="#0d1f33" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Highlight dorsale -->
+  <path d="M110 38 Q150 28 190 42 Q210 50 218 65"
+        fill="none" stroke="#3a6d9e" stroke-width="1" opacity="0.4" stroke-linecap="round"/>
+
+  <!-- Tronco cerebrale -->
+  <path d="M28 210 Q50 218 75 222 Q90 224 100 228 Q100 240 98 250 Q85 252 70 248 Q48 240 34 226 Z"
+        fill="#152840"/>
+  <path d="M28 210 Q50 218 75 222 Q90 224 100 228 Q100 240 98 250 Q85 252 70 248 Q48 240 34 226 Z"
+        fill="none" stroke="#1e3d5c" stroke-width="1"/>
+
+  <!-- Cervelletto -->
+  <path d="M240 194 C252 200 262 210 258 222 C254 234 238 238 222 234
+           C206 230 195 220 198 210 C202 200 220 196 240 194 Z"
+        fill="#172e48"/>
+  <path d="M208 214 Q222 210 238 214" fill="none" stroke="#0d1f33" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M205 220 Q220 216 236 220" fill="none" stroke="#0d1f33" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M210 226 Q222 223 234 226" fill="none" stroke="#0d1f33" stroke-width="1" stroke-linecap="round"/>
+
+  <!-- Cluster hypo — blu -->
+  <circle cx="95"  cy="96"  r="22" fill="#0a1e35" opacity="0.85"/>
+  <circle cx="95"  cy="96"  r="14" fill="#1a5c9e" opacity="0.9"/>
+  <circle cx="95"  cy="96"  r="7"  fill="#5ba3d9"/>
+  <circle cx="92"  cy="93"  r="2.5" fill="#a8d4f0" opacity="0.7"/>
+
+  <!-- Cluster intermedio — teal -->
+  <circle cx="155" cy="88"  r="17" fill="#072820" opacity="0.85"/>
+  <circle cx="155" cy="88"  r="11" fill="#0e7a5e" opacity="0.9"/>
+  <circle cx="155" cy="88"  r="6"  fill="#3dbfa0"/>
+  <circle cx="153" cy="86"  r="2"  fill="#8eecd8" opacity="0.7"/>
+
+  <!-- Cluster hyper — rosso -->
+  <circle cx="185" cy="140" r="26" fill="#300808" opacity="0.88"/>
+  <circle cx="185" cy="140" r="17" fill="#b52020" opacity="0.92"/>
+  <circle cx="185" cy="140" r="9"  fill="#e86060"/>
+  <circle cx="182" cy="137" r="3.5" fill="#ffaaaa" opacity="0.7"/>
+
+  <!-- Bordo cervello -->
+  <path d="M90 220 C30 215 -2 178 2 138 C6 98 28 64 62 48
+           C82 38 104 38 120 48 C128 34 144 24 164 22
+           C192 18 216 36 222 62 C236 54 256 54 268 70
+           C284 90 280 120 264 136 C276 152 276 176 260 194
+           C242 214 210 224 178 220 Z"
+        fill="none" stroke="#2a5a8a" stroke-width="1.5" opacity="0.7"/>
+</g>
+
+<!-- Testo -->
+<text x="368" y="108" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+      font-size="76" font-weight="800" fill="#0D2137" letter-spacing="-3">Glio</text>
+<text x="524" y="108" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+      font-size="76" font-weight="200" fill="#2471A3" letter-spacing="-3">Core</text>
+
+<line x1="368" y1="126" x2="638" y2="126" stroke="#2471A3" stroke-width="0.8" opacity="0.4"/>
+
+<text x="368" y="152" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+      font-size="12" fill="#888888" letter-spacing="4">PET · MRI · GLIOMA ANALYSIS</text>
+
+<text x="368" y="196" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+      font-size="13" font-weight="500" fill="#1c3550">Jonathan Manca</text>
+<text x="368" y="216" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+      font-size="11" fill="#2471A3">linkedin.com/in/jonathan-manca</text>
+</svg>
