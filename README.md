@@ -254,17 +254,22 @@ The `docs/` folder contains all supporting material:
 ```
 docs/
 ├── logo.svg                              # project logo
-├── GlioCore_Methods_Guide_EN.docx        # technical methods guide
-├── GlioCore_Validation_Report_EN.docx    # full validation report
-├── fig1_ari_boxplot_EN.png               # ARI distribution
-├── fig2_metrics_ci_EN.png                # metrics with confidence intervals
-├── fig3_accuracy_runtime_EN.png          # accuracy vs runtime
-└── results/                              # per-case benchmark tables (Excel)
+├── GlioCore_Methods_Guide.pdf            # technical methods guide
+├── GlioCore_Validation_Report.pdf        # full validation report
+├── fig1_ari_boxplot.png                  # ARI distribution
+├── fig2_metrics_ci.png                   # metrics with confidence intervals
+├── fig3_accuracy_runtime.png             # accuracy vs runtime
+└── results/                              # per-case benchmark tables
     ├── brats_MRI_Threshold.xlsx
+    ├── brats_MRI_Threshold.json
     ├── brats_MRI_FCM.xlsx
+    ├── brats_MRI_FCM.json
     ├── brats_MRI_GMM.xlsx
+    ├── brats_MRI_GMM.json
     ├── brats_MRI_MRF-EM.xlsx
-    └── brats_MRI_Hierarchical.xlsx
+    ├── brats_MRI_MRF-EM.json
+    ├── brats_MRI_Hierarchical.xlsx
+    └── brats_MRI_Hierarchical.json
 ```
 
 ---
