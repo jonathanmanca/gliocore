@@ -290,7 +290,7 @@ docs/
   author  = {Manca, Jonathan},
   title   = {GlioCore: Metabolic Glioma Segmentation from PET/MRI},
   year    = {2026},
-  url     = {https://github.com/jonathan-manca/gliocore},
+  url     = {https://github.com/jonathanmanca/gliocore},
   license = {MIT}
 }
 ```
@@ -316,6 +316,7 @@ docs/
 ## Author
 
 **Jonathan Manca** — Independent researcher, neuro-oncology imaging
+
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-jonathan--manca-0077B5?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/jonathan-manca)
 
 <div align="center">
