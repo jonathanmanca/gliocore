@@ -86,7 +86,7 @@ These numbers are deliberately conservative and fully reproducible:
 - **Inductive bias disclosed.** The Hierarchical method is designed around a tissue hierarchy mirroring the BraTS label structure, giving it a favourable bias on the ARI metric; its advantage is expected to narrow on partitions of a different nature.
 - Regions are evaluated only on cases where they exist in the ground truth.
 
-For full methodology, see the [Methods Guide](docs/GlioCore_Methods_Guide_EN.docx) and the [Validation Report](docs/GlioCore_Validation_Report_EN.docx).
+For full methodology, see the [Methods Guide](docs/GlioCore_Methods_Guide.pdf) and the [Validation Report](docs/GlioCore_Validation_Report.pdf).
 
 ---
 
@@ -215,7 +215,7 @@ The novel contribution of GlioCore. Instead of flat *k*-clustering, it proceeds 
 - **HD95** = 95th percentile of the bidirectional surface distance (robust to outliers).
 - **ARI** (Adjusted Rand Index) = chance-corrected agreement between the model partition and BraTS classes; invariant to label permutation, and computed *without* using the ground truth to choose the cluster mapping.
 
-Full derivations and design rationale are in the [Methods Guide](docs/GlioCore_Methods_Guide_EN.docx).
+Full derivations and design rationale are in the [Methods Guide](docs/GlioCore_Methods_Guide.pdf).
 
 ---
 
