@@ -2,6 +2,7 @@
 GlioCore – configurazione globale.
 Modifica questo file per adattare il tool al tuo ambiente.
 """
+import os
 from pathlib import Path
 
 # ── Percorsi principali ──────────────────────────────────────────────────────
@@ -40,8 +41,13 @@ JHU_LABELS       = ATLAS_DIR / "JHU-ICBM-labels-1mm.nii.gz"
 JHU_LOOKUP       = ATLAS_DIR / "JHU_labels.csv"   # colonne: index, name, abbreviation
 
 # ── Agenti AI ────────────────────────────────────────────────────────────────
-ANTHROPIC_MODEL  = "claude-sonnet-4-20250514"
-AGENT_MAX_TOKENS = 1500
+# La chiave NON va scritta qui: si legge dall'ambiente per non finire nel repo.
+#   Windows (PowerShell):  $env:ANTHROPIC_API_KEY = "sk-ant-..."
+#   Linux/macOS:           export ANTHROPIC_API_KEY="sk-ant-..."
+ANTHROPIC_API_KEY     = os.environ.get("ANTHROPIC_API_KEY", "")
+ANTHROPIC_API_VERSION = "2023-06-01"
+ANTHROPIC_MODEL       = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-20250514")
+AGENT_MAX_TOKENS      = 1500
 
 # ── UI ───────────────────────────────────────────────────────────────────────
 APP_TITLE        = "GlioCore — Glioma Segmentation Tool"

@@ -11,6 +11,7 @@ Riferimento: van der Voort et al. (2023) Neuro-Oncology
 from __future__ import annotations
 import logging
 import pickle
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -24,6 +25,9 @@ log = logging.getLogger(__name__)
 
 _MODEL_PATH  = Path(__file__).parent.parent / "data" / "rf_model.pkl"
 _SCALER_PATH = Path(__file__).parent.parent / "data" / "rf_scaler.pkl"
+# Store dell'apprendimento attivo: una sottocartella per modello, file .npz
+# con le coppie (feature aumentate, label corretti) salvate a ogni correzione.
+_TRAIN_DIR   = Path(__file__).parent.parent / "data" / "active_learning"
 MIN_TRAINING_SAMPLES = 100
 
 
@@ -63,16 +67,25 @@ class BayesianRFSegmentation(BaseSegmentationModel):
     def _fit_impl(self, features: FeatureSet, context: SegmentationContext):
         X = self._augment_features(features, context)
 
-        # Training: correzioni reali o bootstrap da GMM
-        training = self._load_training_data(context)
-        if training and len(training[1]) >= self.min_samples:
-            log.info("BayesianRF: training on real corrections")
+        # Training: correzioni reali accumulate o, in mancanza, bootstrap da GMM.
+        # Le correzioni sono filtrate per dimensionalità coerente con X (le
+        # modalità con un numero diverso di canali non vanno mescolate).
+        training = self._load_training_data(context, X.shape[1])
+        trained_on_corrections = bool(training and len(training[1]) >= self.min_samples)
+        if trained_on_corrections:
             X_train, y_train = training
+            log.info(f"BayesianRF: training on {len(y_train)} real correction samples")
         else:
             log.info("BayesianRF: synthetic bootstrap from GMM")
             X_train, y_train = self._bootstrap_gmm(X, features)
 
         self._train(X_train, y_train)
+        if trained_on_corrections:
+            # Persisti il modello addestrato sulle correzioni per riusi futuri.
+            try:
+                self._save_model()
+            except Exception as e:
+                log.warning(f"BayesianRF: model not saved ({e})")
 
         proba = self._rf.predict_proba(self._scaler.transform(X))
         labels = np.argmax(proba, axis=1)   # 0-indexed
@@ -81,6 +94,7 @@ class BayesianRFSegmentation(BaseSegmentationModel):
         extra = {
             "best_k": len(np.unique(labels)),
             "n_training": len(y_train),
+            "training_source": "corrections" if trained_on_corrections else "gmm_bootstrap",
             "mean_uncertainty": round(float(entropy.mean()), 4),
             "high_uncertainty_pct": round(float((entropy > 0.5).mean() * 100), 2),
         }
@@ -137,9 +151,69 @@ class BayesianRFSegmentation(BaseSegmentationModel):
         self._save_model()
         return {"status": "retrained", "n_samples": len(y)}
 
-    def _load_training_data(self, context):
-        # Placeholder: in produzione legge dal SessionDB
-        return None
+    @classmethod
+    def training_store_dir(cls, model_name: str = "BayesianRF") -> Path:
+        """Cartella dei campioni di apprendimento attivo per un modello."""
+        return _TRAIN_DIR / model_name
+
+    @classmethod
+    def save_training_sample(
+        cls,
+        X: np.ndarray,
+        y: np.ndarray,
+        patient_id: str,
+        tag: str = "",
+    ) -> Path:
+        """
+        Persiste una coppia (feature aumentate, label corretti) nello store.
+
+        Chiamata dall'UI quando l'utente salva una correzione: X deve essere
+        prodotta da `_augment_features` sulla stessa modalità, y i label corretti
+        allineati alle righe di X (cioè i voxel della maschera).
+        """
+        X = np.asarray(X, dtype=np.float32)
+        y = np.asarray(y).astype(np.int64).ravel()
+        if X.ndim != 2 or len(X) != len(y):
+            raise ValueError(
+                f"save_training_sample: X{X.shape} e y{y.shape} non allineati"
+            )
+        d = cls.training_store_dir()
+        d.mkdir(parents=True, exist_ok=True)
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        safe_tag = (tag or "edit").replace("/", "_")
+        path = d / f"{patient_id}_{safe_tag}_{ts}.npz"
+        np.savez_compressed(path, X=X, y=y)
+        log.info(f"Active learning: saved {len(y)} samples → {path.name}")
+        return path
+
+    def _load_training_data(self, context, n_features: int):
+        """
+        Carica tutte le correzioni accumulate compatibili con la modalità
+        corrente (stesso numero di feature di X) e le concatena in (X, y).
+        Restituisce None se non ci sono campioni utilizzabili.
+        """
+        d = self.training_store_dir(self.name)
+        if not d.exists():
+            return None
+        Xs, ys, skipped = [], [], 0
+        for f in sorted(d.glob("*.npz")):
+            try:
+                arr = np.load(f)
+                X_f, y_f = arr["X"], arr["y"]
+            except Exception as e:
+                log.warning(f"Active learning: skip {f.name} ({e})")
+                continue
+            if X_f.ndim != 2 or X_f.shape[1] != n_features:
+                skipped += 1   # campione di un'altra modalità/feature set
+                continue
+            Xs.append(X_f)
+            ys.append(y_f)
+        if not Xs:
+            if skipped:
+                log.info(f"Active learning: {skipped} samples skipped "
+                         f"(feature dim ≠ {n_features})")
+            return None
+        return np.vstack(Xs), np.concatenate(ys)
 
     def _save_model(self):
         _MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)

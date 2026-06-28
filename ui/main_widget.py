@@ -668,6 +668,23 @@ class GlioCoreWidget(QWidget):
             correction_type="edit", n_voxels_changed=n_changed,
             corrected_mask_path=str(corr_path),
             notes=self.txt_correction_notes.toPlainText())
+
+        # Active learning: salva (feature aumentate, label corretti) per il
+        # retraining incrementale del Random Forest. Le feature sono ricostruite
+        # con la stessa pipeline usata dall'RF, allineate ai voxel della maschera.
+        try:
+            from segmentation.bayesian_rf import BayesianRFSegmentation
+            primary = self.result.primary_channel
+            feats = self.data.build_features(primary_channel=primary, normalize=True)
+            ctx = self.data.build_context(primary_channel=primary)
+            X = BayesianRFSegmentation()._augment_features(feats, ctx)
+            y = corrected[self.data.mask]
+            if len(X) == len(y):
+                BayesianRFSegmentation.save_training_sample(
+                    X, y, self.data.patient_id, tag=self.result.model_name)
+        except Exception as e:
+            log.warning(f"Active learning: training sample not saved ({e})")
+
         for layer in self.viewer.layers:
             if "Cluster" in layer.name and hasattr(layer, "mode"):
                 layer.mode = "pan_zoom"; break
@@ -814,9 +831,22 @@ class GlioCoreWidget(QWidget):
     # ── Agenti ───────────────────────────────────────────────────────────────
 
     def _agent_run_async(self, fn, *args):
+        # I widget Qt vanno aggiornati solo dal main thread: il worker calcola
+        # in background e consegna il risultato via Signal (come la segmentazione).
         self.txt_agent.setText("⏳ Processing...")
-        threading.Thread(target=lambda: self.txt_agent.setText(fn(*args)),
-                         daemon=True).start()
+        sig = _Signals()
+        sig.finished.connect(self.txt_agent.setText)
+        sig.error.connect(lambda e: self.txt_agent.setText(f"[Error: {e}]"))
+
+        def worker():
+            try:
+                sig.finished.emit(fn(*args))
+            except Exception as e:
+                import traceback; traceback.print_exc()
+                sig.error.emit(str(e))
+
+        self._agent_thread = threading.Thread(target=worker, daemon=True)
+        self._agent_thread.start()
 
     def _agent_suggest_methods(self):
         current = [m["name"] for m in list_models()]

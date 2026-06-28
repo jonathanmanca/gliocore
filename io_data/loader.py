@@ -331,9 +331,13 @@ def _load_channel(patient_dir, channel, cfg, required, label) -> nib.Nifti1Image
 
 
 def _load_nifti(path: Path, label: str) -> nib.Nifti1Image:
+    # Caricamento lazy: i dati vengono letti una sola volta da _to_float32
+    # (np.asarray(dataobj, float32)). Evitiamo il get_fdata() che caricava
+    # l'intero volume in float64 solo per scartarlo — stessi valori, metà I/O
+    # e memoria. Si valida l'header (shape) senza materializzare i dati.
     try:
         img = nib.load(str(path))
-        img.get_fdata()
+        _ = img.shape   # forza il parsing dell'header, niente lettura dati
         return img
     except Exception as e:
         raise LoadError(f"Unable to read {label} ({path.name}): {e}") from e

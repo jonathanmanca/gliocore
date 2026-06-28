@@ -7,7 +7,7 @@ Il modulo di apprendimento attivo la usa per migliorare i modelli nel tempo.
 from __future__ import annotations
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from sqlalchemy import (
@@ -17,6 +17,11 @@ from sqlalchemy import (
 from sqlalchemy.orm import DeclarativeBase, Session
 
 log = logging.getLogger(__name__)
+
+
+def _utcnow() -> datetime:
+    """UTC naive, come il deprecato datetime.utcnow (stesso formato salvato)."""
+    return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
 class Base(DeclarativeBase):
@@ -34,7 +39,7 @@ class SegmentationRun(Base):
     params      = Column(Text)      # JSON
     metrics     = Column(Text)      # JSON
     output_dir  = Column(String(256))
-    created_at  = Column(DateTime, default=datetime.utcnow)
+    created_at  = Column(DateTime, default=_utcnow)
     is_validated = Column(Boolean, default=False)
 
 
@@ -53,7 +58,7 @@ class ManualCorrection(Base):
     correction_type = Column(String(16))            # 'add' | 'remove'
     n_voxels_changed = Column(Integer)
     corrected_mask_path = Column(String(256))
-    created_at  = Column(DateTime, default=datetime.utcnow)
+    created_at  = Column(DateTime, default=_utcnow)
     notes       = Column(Text, default="")
 
 

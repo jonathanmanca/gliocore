@@ -61,7 +61,7 @@ Validation on the **full 271-case** `training_data_additional` subset of BraTS 2
 | Threshold (baseline) | 0.13 [0.11–0.15] | 0.55 [0.49–0.61] | 1.6 s |
 | FCM | 0.24 [0.21–0.27] | 0.38 [0.32–0.43] | 4.3 s |
 | GMM | 0.40 [0.36–0.42] | **0.74** [0.67–0.76] | 8 s |
-| MRF-EM | 0.41 [0.37–0.46] | 0.73 [0.67–0.77] | 73 s |
+| MRF-EM | 0.41 [0.37–0.46] | 0.73 [0.67–0.77] | 14.8 s |
 | **Hierarchical** | **0.52** [0.48–0.56] | 0.66 [0.59–0.72] | **4.4 s** |
 
 *Medians across 271 cases (ARI) and 233 cases where the region exists in the ground truth (Dice). ARI = Adjusted Rand Index (structural agreement); Dice ET = Dice on the enhancing tumor.*
@@ -70,7 +70,7 @@ Validation on the **full 271-case** `training_data_additional` subset of BraTS 2
 
 **A characterized trade-off, not a single winner.** No method dominates across all metrics:
 
-- **Structural agreement (ARI):** the proposed **Hierarchical** method leads (0.52). A paired Wilcoxon test shows its advantage over Threshold, FCM and GMM is significant (p < 0.000001), while versus **MRF-EM it is *not* significant** (p = 0.082, Cliff's δ = 0.02) — the two are statistically equivalent, but Hierarchical runs ~17× faster (4.4 vs 73 s/case).
+- **Structural agreement (ARI):** the proposed **Hierarchical** method leads (0.52). A paired Wilcoxon test shows its advantage over Threshold, FCM and GMM is significant (p < 0.000001), while versus **MRF-EM it is *not* significant** (p = 0.082, Cliff's δ = 0.02) — the two are statistically equivalent, but Hierarchical runs ~3.4× faster (4.4 vs 14.8 s/case).
 - **Enhancing tumor (Dice ET):** **GMM and MRF-EM lead** (≈0.73), ahead of Hierarchical (0.66).
 - **Tumor Core:** low for *all* methods (0.28–0.41), reflecting necrosis/edema signal overlap on structural MRI.
 - **Baseline:** the threshold floor (ARI 0.13) confirms clustering adds substantial value.

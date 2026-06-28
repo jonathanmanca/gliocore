@@ -7,6 +7,8 @@ data/patients/
 data/output/
 data/ground_truth/
 data/sessions.db
+data/active_learning/    # store correzioni per l'apprendimento attivo (.npz)
+*.npz
 
 # ----- Atlante (file pesanti, si scaricano a parte) -----
 data/atlas/*.nii

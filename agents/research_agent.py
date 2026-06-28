@@ -13,11 +13,59 @@ from typing import Callable
 
 import httpx
 
-from config.settings import ANTHROPIC_MODEL, AGENT_MAX_TOKENS
+from config.settings import (
+    ANTHROPIC_MODEL, AGENT_MAX_TOKENS,
+    ANTHROPIC_API_KEY, ANTHROPIC_API_VERSION,
+)
 
 log = logging.getLogger(__name__)
 
 ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages"
+
+
+def call_anthropic(
+    system: str,
+    prompt: str,
+    on_token: Callable[[str], None] | None = None,
+) -> str:
+    """
+    Chiamata unica all'API Anthropic, condivisa dagli agenti.
+
+    Legge la chiave da config (env ANTHROPIC_API_KEY) e invia gli header
+    obbligatori (x-api-key, anthropic-version). Restituisce il testo della
+    risposta, oppure un messaggio '[Agent error: ...]' leggibile in caso di
+    errore (nessuna eccezione propagata all'UI).
+    """
+    if not ANTHROPIC_API_KEY:
+        return ("[Agent error: ANTHROPIC_API_KEY non impostata. "
+                "Imposta la variabile d'ambiente con la tua chiave Anthropic "
+                "e riavvia GlioCore.]")
+
+    payload = {
+        "model":      ANTHROPIC_MODEL,
+        "max_tokens": AGENT_MAX_TOKENS,
+        "system":     system,
+        "messages":   [{"role": "user", "content": prompt}],
+    }
+    headers = {
+        "x-api-key":         ANTHROPIC_API_KEY,
+        "anthropic-version": ANTHROPIC_API_VERSION,
+        "content-type":      "application/json",
+    }
+    try:
+        with httpx.Client(timeout=60) as client:
+            response = client.post(ANTHROPIC_API_URL, json=payload, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        return data["content"][0]["text"]
+    except httpx.HTTPStatusError as e:
+        # Messaggio API utile (es. 401 chiave errata, 429 rate limit)
+        detail = e.response.text[:300] if e.response is not None else str(e)
+        log.error(f"Anthropic API HTTP {e.response.status_code}: {detail}")
+        return f"[Agent error: HTTP {e.response.status_code} — {detail}]"
+    except Exception as e:
+        log.error(f"Anthropic API error: {e}")
+        return f"[Agent error: {e}]"
 
 
 class ResearchAgent:
@@ -77,25 +125,7 @@ main advantage for this type of data, and main limitation."""
         prompt: str,
         on_token: Callable[[str], None] | None,
     ) -> str:
-        payload = {
-            "model":      ANTHROPIC_MODEL,
-            "max_tokens": AGENT_MAX_TOKENS,
-            "system":     system,
-            "messages":   [{"role": "user", "content": prompt}],
-        }
-        try:
-            with httpx.Client(timeout=60) as client:
-                response = client.post(
-                    ANTHROPIC_API_URL,
-                    json=payload,
-                    headers={"Content-Type": "application/json"},
-                )
-            response.raise_for_status()
-            data = response.json()
-            return data["content"][0]["text"]
-        except Exception as e:
-            log.error(f"ResearchAgent API error: {e}")
-            return f"[Agent error: {e}]"
+        return call_anthropic(system, prompt, on_token)
 
 
 class ModelAgent:
@@ -181,22 +211,4 @@ concise way, highlighting the practical implications for the neuroradiologist.""
         prompt: str,
         on_token: Callable[[str], None] | None,
     ) -> str:
-        payload = {
-            "model":      ANTHROPIC_MODEL,
-            "max_tokens": AGENT_MAX_TOKENS,
-            "system":     system,
-            "messages":   [{"role": "user", "content": prompt}],
-        }
-        try:
-            with httpx.Client(timeout=60) as client:
-                response = client.post(
-                    ANTHROPIC_API_URL,
-                    json=payload,
-                    headers={"Content-Type": "application/json"},
-                )
-            response.raise_for_status()
-            data = response.json()
-            return data["content"][0]["text"]
-        except Exception as e:
-            log.error(f"ModelAgent API error: {e}")
-            return f"[Agent error: {e}]"
+        return call_anthropic(system, prompt, on_token)
