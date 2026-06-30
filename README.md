@@ -11,7 +11,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey?style=flat-square)]()
 [![Status](https://img.shields.io/badge/status-research-orange?style=flat-square)]()
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20933962.svg)](https://doi.org/10.5281/zenodo.20933962)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20933962-blue)](https://doi.org/10.5281/zenodo.20933962)
 
 **An open-source Python tool for semi-automatic glioma segmentation from co-registered PET and MRI, combining six clustering models, a white-matter atlas, active learning, and a novel hierarchical method validated on BraTS 2024.**
 
