@@ -93,11 +93,28 @@ For full methodology, see the [Methods Guide](docs/GlioCore_Methods_Guide.pdf) a
 
 ## Installation
 
+### Prerequisites
+
+- **Python 3.11**
+- An environment manager. Either **conda** (via [Miniconda](https://docs.conda.io/en/latest/miniconda.html), a lightweight installer) or Python's built-in **venv** works. Instructions for both are given below.
+
 ### 1. Create the environment
+
+**Option A — conda** (requires Miniconda or Anaconda):
 
 ```bash
 conda create -n gliocore python=3.11 -y
 conda activate gliocore
+```
+
+**Option B — venv** (no extra install, uses your system Python 3.11):
+
+```bash
+python -m venv gliocore-env
+# Windows:
+gliocore-env\Scripts\activate
+# macOS / Linux:
+source gliocore-env/bin/activate
 ```
 
 ### 2. Install dependencies
